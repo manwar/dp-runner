@@ -77,17 +77,16 @@ EOF
 }
 
 sub list_design_patterns {
-    my $runner = DesignPattern::Runner->new();
+    my $runner   = DesignPattern::Runner->new;
     my $patterns = $runner->get_available_patterns;
 
-    print "Available Design Patterns:\n";
-    print "-" x 31 . "\n";
+    print "  Available Design Patterns\n";
+    print "-" x 29 . "\n";
 
-    foreach my $pattern_name (sort keys %$patterns) {
-        my $info = $patterns->{$pattern_name};
-        printf "%-25s %-10s\n",
-            $pattern_name,
-            "($info->{abbr})";
+    foreach my $pattern (@$patterns) {
+        my $name = $pattern->{name};
+        my $abbr = $pattern->{abbr};
+        printf "%-25s %-10s\n", $name, $abbr;
     }
 
     print "\nExamples:\n";

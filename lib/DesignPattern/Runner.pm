@@ -8,31 +8,11 @@ use File::Spec;
 
 our @PATTERN_ORDER = (
     # Creational Patterns
-    'abstract factory',
-    'builder',
-    'factory method',
-    'prototype',
-    'singleton',
+    'abf','bld','fam','prt','sng',
     # Structural Patterns
-    'adapter',
-    'bridge',
-    'composite',
-    'filter',
-    'decorator',
-    'facade',
-    'proxy',
+    'adp','brg','com','flt','dec','fac','prx',
     # Behavioural Patterns
-    'chain of responsibility',
-    'command',
-    'interpreter',
-    'iterator',
-    'mediator',
-    'memento',
-    'observer',
-    'state',
-    'strategy',
-    'template',
-    'visitor',
+    'cor','com','int','itr','med','mem','obs','sta','str','tem','vis',
 );
 
 our %PATTERN_REGISTRY = (
@@ -126,6 +106,21 @@ sub resolve_dp_name {
         if exists $PATTERN_REGISTRY{lc $input};
 
     return undef;
+}
+
+sub get_available_patterns {
+    my ($self) = @_;
+
+    my $ordered_registry;
+    foreach my $abbr (@PATTERN_ORDER) {
+        push @$ordered_registry, {
+            abbr  => $abbr,
+            name  => $PATTERN_REGISTRY{$abbr}->{name},
+            class => $PATTERN_REGISTRY{$abbr}->{class},
+        };
+    }
+
+    return $ordered_registry;
 }
 
 sub _detect_available_types {
