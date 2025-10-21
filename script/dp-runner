@@ -1,0 +1,98 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+#use FindBin;
+#use lib "$FindBin::Bin/lib";
+use DesignPattern::Runner;
+use Getopt::Long;
+
+my %options = (
+    mode     => 'both',  # 'both'/'test'/'benchmark'
+    count    => 1_000_000,
+    path     => undef,
+    dp       => 'abf',
+    help     => 0,
+    list     => 0,       # List available patterns
+);
+
+GetOptions(
+    'mode=s'   => \$options{mode},
+    'count=i'  => \$options{count},
+    'path=s'   => \$options{path},
+    'dp=s'     => \$options{dp},
+    'help'     => \$options{help},
+    'list'     => \$options{list},
+) or show_help() and exit;
+
+if ($options{help}) {
+    show_help();
+    exit;
+}
+
+if ($options{list}) {
+    list_design_patterns();
+    exit;
+}
+
+if ($options{path}) {
+    die "ERROR: Directory $options{path} does not exist.\n"
+        unless (-d $options{path});
+} elsif (!$options{list}) {
+    die "ERROR: --path is required unless using --list\n";
+}
+
+die "ERROR: Mode must be 'test' or 'benchmark'\n"
+    if $options{mode} && $options{mode} !~ /^(both|test|benchmark)$/;
+
+my $runner = DesignPattern::Runner->new(
+    mode  => $options{mode},
+    path  => $options{path},
+    dp    => $options{dp},
+    count => $options{count},
+);
+
+$runner->run();
+
+#
+#
+# FUNCTIONS
+
+sub show_help {
+    print <<"EOF";
+Usage: dp-runner [OPTIONS]
+
+Options:
+    --mode MODE     Operation mode: 'both', 'test' or 'benchmark' (default: both)
+    --count NUMBER  Iteration count for benchmark (default: 1,000,000)
+    --path NAME     Library path for design pattern implementation
+    --dp NAME       Design Pattern name or abbreviation (see --list)
+    --list          List all available design patterns
+    --help          Show this help message
+
+Examples:
+    dp-runner --list
+    dp-runner --mode test      --dp abf --path ./libs
+    dp-runner --mode benchmark --dp abf --path ./libs
+
+EOF
+}
+
+sub list_design_patterns {
+    my $runner = DesignPattern::Runner->new();
+    my $patterns = $runner->get_available_patterns;
+
+    print "Available Design Patterns:\n";
+    print "-" x 31 . "\n";
+
+    foreach my $pattern_name (sort keys %$patterns) {
+        my $info = $patterns->{$pattern_name};
+        printf "%-25s %-10s\n",
+            $pattern_name,
+            "($info->{abbr})";
+    }
+
+    print "\nExamples:\n";
+    print "  --dp abf # Abstract Factory\n";
+    print "  --dp bld # Builder\n";
+}
