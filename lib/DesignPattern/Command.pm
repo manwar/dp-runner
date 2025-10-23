@@ -4,15 +4,13 @@ use Class;
 
 sub BUILD {
     my ($self, $args) = @_;
+
     for (qw/dp path/) {
         die "Missing required key '$_'.\n" unless (exists $self->{$_});
     }
 }
 
-sub execute {
-    my ($self, $type) = @_;
-    die "execute method must be implemented by subclass";
-}
+sub execute { ... }
 
 sub _get_dp_class_name {
     my ($self, $pattern_name) = @_;
