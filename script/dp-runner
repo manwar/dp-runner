@@ -70,8 +70,8 @@ Options:
 
 Examples:
     dp-runner --list
-    dp-runner --mode test      --dp abf --path ./libs
-    dp-runner --mode benchmark --dp abf --path ./libs
+    dp-runner --mode test      --dp abf --path abstract-factory/
+    dp-runner --mode benchmark --dp abf --path abstract-factory/
 
 EOF
 }
