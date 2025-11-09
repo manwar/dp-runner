@@ -10,7 +10,7 @@ our @PATTERN_ORDER = (
     # Creational Patterns
     'abf','bld','fam','prt','sng',
     # Structural Patterns
-    'adp','brg','com','flt','dec','fac','prx',
+    'adp','brg','cmp','flt','dec','fac','prx',
     # Behavioural Patterns
     'cor','com','int','itr','med','mem','obs','sta','str','tem','vis',
 );
